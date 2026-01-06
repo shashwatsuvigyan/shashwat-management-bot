@@ -5,6 +5,7 @@ import os
 import importlib
 from telegram.ext import ApplicationBuilder
 from config import BOT_TOKEN
+from telegram import Update
 
 # --- LOGGING ---
 logging.basicConfig(
@@ -50,4 +51,10 @@ if __name__ == '__main__':
     load_modules(application)
 
     print("🚀 Bot is running...")
-    application.run_polling()
+    if __name__ == '__main__':
+    # ... (build and load modules code) ...
+
+    print("🚀 Bot is running with Anti-Banall Enabled...")
+    
+    # ENABLE chat_member UPDATES
+    application.run_polling(allowed_updates=Update.ALL_TYPES)
