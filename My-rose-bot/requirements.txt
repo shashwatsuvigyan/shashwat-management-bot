@@ -3,3 +3,4 @@ motor
 dnspython
 flask
 python-dotenv
+aiohttp
