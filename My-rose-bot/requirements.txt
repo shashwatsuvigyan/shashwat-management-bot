@@ -2,3 +2,4 @@ python-telegram-bot
 motor
 dnspython
 flask
+python-dotenv
