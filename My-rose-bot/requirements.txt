@@ -4,3 +4,4 @@ dnspython
 flask
 python-dotenv
 aiohttp
+better-profanity
