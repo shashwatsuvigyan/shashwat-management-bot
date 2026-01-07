@@ -2,7 +2,8 @@ import logging
 import os
 import importlib
 from telegram import Update
-from telegram.ext import ApplicationBuilder
+from telegram.ext import ApplicationBuilder, Defaults
+from telegram.request import HTTPXRequest  # <--- Import this
 from config import BOT_TOKEN
 from keep_alive import keep_alive
 
@@ -15,10 +16,8 @@ logger = logging.getLogger(__name__)
 
 def load_modules(application):
     """Dynamically loads all modules from the 'modules' folder."""
-    # Ensure we are looking at the correct directory relative to this file
     modules_path = os.path.join(os.path.dirname(__file__), 'modules')
     
-    # Get list of .py files (excluding __init__.py)
     if os.path.exists(modules_path):
         module_files = [
             f[:-3] for f in os.listdir(modules_path)
@@ -30,10 +29,7 @@ def load_modules(application):
 
     for module_name in module_files:
         try:
-            # Import modules.admin, modules.notes, etc.
             module = importlib.import_module(f'modules.{module_name}')
-            
-            # Check for the setup function
             if hasattr(module, 'register_handlers'):
                 module.register_handlers(application)
                 logger.info(f"✅ Loaded module: {module_name}")
@@ -52,13 +48,31 @@ if __name__ == '__main__':
         exit(1)
 
     print("🧱 Building Application...")
-    application = ApplicationBuilder().token(BOT_TOKEN).build()
+
+    # --- FIX START: Configure Timeouts Here ---
+    trequest = HTTPXRequest(
+        connection_pool_size=8,
+        read_timeout=30.0,      # Wait 30s for data
+        write_timeout=30.0,
+        connect_timeout=30.0,   # Wait 30s to connect
+        pool_timeout=30.0       # Wait 30s for pool slots
+    )
+    
+    application = (
+        ApplicationBuilder()
+        .token(BOT_TOKEN)
+        .request(trequest) # Pass the request settings here
+        .build()
+    )
+    # --- FIX END ---
 
     print("🔌 Loading Modules...")
     load_modules(application)
 
-    print("🚀 Bot is running with Anti-Banall Enabled...")
+    print("🚀 Bot is running with Anti-Ban & Polling Fixes Enabled...")
     
     # 3. Start Polling
-    # allowed_updates=Update.ALL_TYPES is REQUIRED for the Anti-Banall feature to work
-    application.run_polling(allowed_updates=Update.ALL_TYPES)
+    # Remove timeout arguments from here; they are now in 'trequest'
+    application.run_polling(
+        allowed_updates=Update.ALL_TYPES
+    )
