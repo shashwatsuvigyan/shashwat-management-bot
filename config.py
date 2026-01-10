@@ -1,13 +1,8 @@
 import os
-from dotenv import load_dotenv
-
-# Load secrets from a .env file (for running locally)
-load_dotenv()
-
 # Get variables
-BOT_TOKEN = os.getenv("BOT_TOKEN")
-MONGO_URI = os.getenv("MONGO_URI")
-OWNER_ID = os.getenv("OWNER_ID")
+BOT_TOKEN = os.environ.get("BOT_TOKEN")
+MONGO_URI = os.environ.get("MONGO_URI")
+OWNER_ID = os.environ.get("OWNER_ID")
 
 # Security Check: Stop the bot if secrets are missing
 if not BOT_TOKEN:

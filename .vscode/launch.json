@@ -1,0 +1,28 @@
+{
+    "configurations": [
+        {
+            "name": "Deploy Cloud Function",
+            "type": "cloudcode.cloudfunctions",
+            "request": "launch",
+            "functionName": "shashwat-management-bot",
+            "gen": "GEN_1",
+            "revision": "1",
+            "entryPoint": "telegram_webhook",
+            "testInput": "",
+            "region": "europe-west1",
+            "runtime": "python311"
+        },
+        {
+            "name": "Deploy Cloud Function",
+            "type": "cloudcode.cloudfunctions",
+            "request": "launch",
+            "functionName": "telegram_webhook",
+            "gen": "GEN_1",
+            "revision": "1",
+            "entryPoint": "telegram_webhook",
+            "testInput": "",
+            "region": "europe-west1",
+            "runtime": "python311"
+        }
+    ]
+}
