@@ -5,3 +5,4 @@ flask
 python-dotenv
 aiohttp
 better-profanity
+functions-framework
