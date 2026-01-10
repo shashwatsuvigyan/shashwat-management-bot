@@ -15,14 +15,13 @@ async def help_command(update: Update, context: ContextTypes.DEFAULT_TYPE):
 `/lock <type>`, `/unlock <type>`
 (Types: sticker, photo, video, document)
 
-**Notes:**
-`/save <name> <content>`
-Get note: `#name`
+**Bio Protection:**
+`/biolock on/off`
 
-**Utils:**
-`/purge` (Reply to start message)
+**Edit Guardian:**
+`/editguardian on/off`
     """
-    await update.message.reply_text(text, parse_mode='Markdown')
+    await update.effective_message.reply_text(text, parse_mode='Markdown')
 
 def register_handlers(application):
     application.add_handler(CommandHandler("help", help_command))
