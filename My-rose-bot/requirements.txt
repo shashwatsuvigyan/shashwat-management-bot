@@ -4,3 +4,4 @@ motor
 dnspython
 aiohttp
 functions-framework
+better-profanity
