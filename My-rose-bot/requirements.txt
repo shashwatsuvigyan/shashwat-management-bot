@@ -1,8 +1,6 @@
 python-telegram-bot
+pymongo
 motor
 dnspython
-flask
-python-dotenv
 aiohttp
-better-profanity
 functions-framework
