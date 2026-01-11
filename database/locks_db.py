@@ -1,20 +1,21 @@
 from database.client import db
 
-locks_col = db.locks
-
-async def lock_type(chat_id, lock_type):
-    await locks_col.update_one(
-        {"chat_id": chat_id},
-        {"$addToSet": {"locked": lock_type}},
+async def lock_type(chat_id, lock_type: str):
+    """Adds a type (e.g., 'sticker') to the locked list."""
+    await db.chats.update_one(
+        {'_id': chat_id}, 
+        {'$addToSet': {'locked_types': lock_type}}, # $addToSet prevents duplicates
         upsert=True
     )
 
-async def unlock_type(chat_id, lock_type):
-    await locks_col.update_one(
-        {"chat_id": chat_id},
-        {"$pull": {"locked": lock_type}}
+async def unlock_type(chat_id, lock_type: str):
+    """Removes a type from the locked list."""
+    await db.chats.update_one(
+        {'_id': chat_id}, 
+        {'$pull': {'locked_types': lock_type}} # $pull removes specific item
     )
 
-async def get_locked_types(chat_id):
-    doc = await locks_col.find_one({"chat_id": chat_id})
-    return doc['locked'] if doc and 'locked' in doc else []
+async def get_locked_types(chat_id) -> list:
+    """Returns a list of all locked types for the chat."""
+    data = await db.chats.find_one({'_id': chat_id})
+    return data.get('locked_types', []) if data else []
